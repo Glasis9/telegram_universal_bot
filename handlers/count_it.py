@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from loader import dp, bot
 from states.count import Count
-from keyboards.inline_keyboard import inline_keyboard_exit
+from keyboards.inline_keyboard import inline_keyboard_exit_count
 from keyboards.keyboard import keyboard
 from aiogram.types import ReplyKeyboardRemove
 
@@ -12,7 +12,7 @@ from aiogram.types import ReplyKeyboardRemove
 async def count_it(message: types.Message):
     await message.answer(
         text="Input task for example: (2 * 4 / 2) ** 2",
-        reply_markup=inline_keyboard_exit
+        reply_markup=inline_keyboard_exit_count
     )
     await Count.count.set()
 
@@ -30,7 +30,7 @@ async def count(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.callback_query_handler(text="exit", state="*")
-async def exit(callback: types.CallbackQuery, state: FSMContext):
+@dp.callback_query_handler(text="exit_count", state="*")
+async def exit_count(callback: types.CallbackQuery, state: FSMContext):
     await state.finish()
     await callback.message.answer(text="Exit", reply_markup=keyboard)
