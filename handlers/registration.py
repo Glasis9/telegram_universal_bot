@@ -62,9 +62,9 @@ async def input_email(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Registration.chat_id_user)
 async def save_chat_id_user(message: types.Message, state: FSMContext):
-    answer = message.text
+    answer = message.text.lower()
 
-    if answer == "Yes":
+    if answer == "yes":
         get_user_data = await state.get_data()
         username = get_user_data.get("username")
         email = get_user_data.get("email")
@@ -73,7 +73,7 @@ async def save_chat_id_user(message: types.Message, state: FSMContext):
         await message.answer(text="Thank you for registering!", reply_markup=keyboard)
         Registration.info[chat_id_user] = [username, email]
         return await state.finish()
-    elif answer == "No":
+    elif answer == "no":
         return await registration(message)
     else:
         await message.answer(text="Incorrect answer!")
@@ -83,12 +83,12 @@ async def save_chat_id_user(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=Registration.repeat_registration)
 async def repeat_registration(message: types.Message, state: FSMContext):
-    answer = message.text
+    answer = message.text.lower()
 
-    if answer == "Yes":
+    if answer == "yes":
         del Registration.info[message.chat.id]
         return await registration(message)
-    if answer == "No":
+    if answer == "no":
         await message.answer(text="Exit", reply_markup=keyboard)
         return await state.finish()
     else:

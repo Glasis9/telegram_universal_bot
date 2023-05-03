@@ -54,45 +54,68 @@ async def previous_photo(callback: types.CallbackQuery):
         )
     except InvalidHTTPUrlContent:
         await callback.message.answer(text="Connection error", reply_markup=keyboard)
+    except KeyError:
+        await callback.message.answer(
+            text="Use the /give_photo button on the keyboard from below",
+            reply_markup=keyboard
+        )
 
 
 @dp.callback_query_handler(text="like")
 async def like(callback: types.CallbackQuery):
-    if PhotoLikeDislike.previous_photo:
-        index = -2
-    else:
-        index = -1
-    data = PhotoLikeDislike.photo[callback.message.chat.id][index]
-    if data[1] in (-1, 0):
-        data[1] = 1
-        await callback.answer(text="Like")  # TODO border.answer
-    if data[1] == 1:
-        await callback.answer(text="You already like this picture")
+    try:
+        if PhotoLikeDislike.previous_photo:
+            index = -2
+        else:
+            index = -1
+        data = PhotoLikeDislike.photo[callback.message.chat.id][index]
+        if data[1] in (-1, 0):
+            data[1] = 1
+            await callback.answer(text="Like", show_alert=True)
+        if data[1] == 1:
+            await callback.answer(text="You already like this picture", show_alert=True)
+    except KeyError:
+        await callback.message.answer(
+            text="Use the /give_photo button on the keyboard from below",
+            reply_markup=keyboard
+        )
 
 
 @dp.callback_query_handler(text="dislike")
 async def dislike(callback: types.CallbackQuery):
-    if PhotoLikeDislike.previous_photo:
-        index = -2
-    else:
-        index = -1
-    data = PhotoLikeDislike.photo[callback.message.chat.id][index]
-    if data[1] in (1, 0):
-        data[1] = -1
-        await callback.answer(text="Dislike")
-    if data[1] == -1:
-        await callback.answer(text="You already dislike this picture")
+    try:
+        if PhotoLikeDislike.previous_photo:
+            index = -2
+        else:
+            index = -1
+        data = PhotoLikeDislike.photo[callback.message.chat.id][index]
+        if data[1] in (1, 0):
+            data[1] = -1
+            await callback.answer(text="Dislike", show_alert=True)
+        if data[1] == -1:
+            await callback.answer(text="You already dislike this picture", show_alert=True)
+    except KeyError:
+        await callback.message.answer(
+            text="Use the /give_photo button on the keyboard from below",
+            reply_markup=keyboard
+        )
 
 
 @dp.callback_query_handler(text="photo_history")
 async def photo_history(callback: types.CallbackQuery):
-    photo_group = types.MediaGroup()
-    for photo_url in PhotoLikeDislike.photo[callback.message.chat.id]:
-        photo_group.attach_photo(InputMediaPhoto(photo_url[0]))
-    await bot.send_media_group(chat_id=callback.message.chat.id, media=photo_group)
-    await callback.message.answer(
-        text="Additional action:", reply_markup=inline_keyboard_for_media_group
-    )
+    try:
+        photo_group = types.MediaGroup()
+        for photo_url in PhotoLikeDislike.photo[callback.message.chat.id]:
+            photo_group.attach_photo(InputMediaPhoto(photo_url[0]))
+        await bot.send_media_group(chat_id=callback.message.chat.id, media=photo_group)
+        await callback.message.answer(
+            text="Additional action:", reply_markup=inline_keyboard_for_media_group
+        )
+    except KeyError:
+        await callback.message.answer(
+            text="Use the /give_photo button on the keyboard from below",
+            reply_markup=keyboard
+        )
 
 
 @dp.callback_query_handler(text="more_photo")
@@ -108,6 +131,11 @@ async def more_photo(callback: types.CallbackQuery):
         )
     except InvalidHTTPUrlContent:
         await callback.message.answer(text="Connection error", reply_markup=keyboard)
+    except KeyError:
+        await callback.message.answer(
+            text="Use the /give_photo button on the keyboard from below",
+            reply_markup=keyboard
+        )
 
 
 @dp.callback_query_handler(text="clear_history")
