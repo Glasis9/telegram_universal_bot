@@ -14,7 +14,7 @@ from states.registration import Registration
 @dp.message_handler(commands=["registration"])
 async def registration(message: types.Message):
     if message.chat.id in Registration.info:
-        await message.answer(
+        return await message.answer(
             text="You are already registered",
             reply_markup=inline_keyboard_check_user_data
         )
@@ -86,7 +86,10 @@ async def repeat_registration(message: types.Message, state: FSMContext):
     answer = message.text.lower()
 
     if answer == "yes":
-        del Registration.info[message.chat.id]
+        try:
+            del Registration.info[message.chat.id]
+        except KeyError:
+            pass
         return await registration(message)
     if answer == "no":
         await message.answer(text="Exit", reply_markup=keyboard)
