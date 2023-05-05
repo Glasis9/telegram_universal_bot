@@ -10,6 +10,7 @@ Select the action:
 <b>/give_number</b> - кинуть два кубика
 <b>/give_letter</b> - рандомная буква алфавита
 <b>/count_it</b> - считает введенный пример
+<b>/registration</b> - регистрация в боте
 """
 
 
