@@ -30,3 +30,4 @@ async def weather(message: types.Message, state: FSMContext):
 async def exit_weather(callback: types.CallbackQuery, state: FSMContext):
     await state.finish()
     await callback.message.answer(text="Exit", reply_markup=keyboard)
+    await callback.message.delete()

@@ -1,5 +1,16 @@
+from loader import db
+
+
 async def on_startup(_):
     from utils.misc.logging import logging
+
+    # Пробуем создать БД, если она уже есть, то подключаемся к ней
+    try:
+        db.create_table_users()
+        db.create_table_photo()
+    except Exception as e:
+        print(e)
+
     print("Bot is ready, Hello 👋🏻")
 
 

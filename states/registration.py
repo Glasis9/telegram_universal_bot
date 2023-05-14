@@ -8,5 +8,5 @@ class Registration(StatesGroup):
     username = State()
     email = State()
     chat_id_user = State()
-    info = {}
     repeat_registration = State()
+    info = {}

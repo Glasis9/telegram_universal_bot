@@ -34,3 +34,4 @@ async def count(message: types.Message, state: FSMContext):
 async def exit_count(callback: types.CallbackQuery, state: FSMContext):
     await state.finish()
     await callback.message.answer(text="Exit", reply_markup=keyboard)
+    await callback.message.delete()
